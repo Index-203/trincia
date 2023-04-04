@@ -2,8 +2,8 @@
 #include <Servo.h>
 #include <RF24.h>
 
-#define ptaglio 13
-#define psblocco 14
+#define ptaglio 40
+#define psblocco 42
 
 //definizione servo
 Servo acceleratore;
@@ -17,14 +17,14 @@ Servo freno_trincia;
 
 void setup() {
   //servo inizializzazione
-  acceleratore.attach(9); 
-  freno.attach(9);
-  cambio_sel.attach(9);
-  cambio_inn.attach(9);
-  sblocc_dx.attach(9);
-  sblocc_sx.attach(9);
-  trincia_inn.attach(9);
-  freno_trincia.attach(9); 
+  acceleratore.attach(22); 
+  freno.attach(24);
+  cambio_sel.attach(28);
+  cambio_inn.attach(30);
+  sblocc_dx.attach(32);
+  sblocc_sx.attach(34);
+  trincia_inn.attach(36);
+  freno_trincia.attach(38); 
 
   //inizializzazione pistoni elettrici
   pinMode(ptaglio, OUTPUT);
