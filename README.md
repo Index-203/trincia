@@ -1,2 +1,1 @@
 # trincia
-trincia cose
