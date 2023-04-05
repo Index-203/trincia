@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include <RF24.h>
+#include <Arduino_FreeRTOS.h>
 
 #define ptaglio 40
 #define psblocco 42
