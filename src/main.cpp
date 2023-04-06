@@ -5,8 +5,8 @@
 #include <RF24.h>
 #include <Arduino_FreeRTOS.h>
 
-#define MOWER_LEFT_PISTON_HIGH_PIN 40   // piston height cut
-#define MOWER_RIGHT_PISTON_HIGH_PIN 41  // piston height cut
+#define MOWER_LEFT_PISTON_HEIGH_PIN 40   // piston height cut
+#define MOWER_RIGHT_PISTON_HEIGH_PIN 41  // piston height cut
 #define TRACK_LEFT_UNLOCK_PIN 42        // piston lock
 #define TRACK_RIGHT_UNLOCK_PIN 43       // piston lock
 #define SAFETY_STOP_PIN 44              // safety stop
@@ -21,6 +21,8 @@ Servo track_unlock_left;
 Servo mower_eng;
 Servo mower_brakes;
 
+
+
 void setup() {
 
     // servo initialization
@@ -34,8 +36,8 @@ void setup() {
     mower_brakes.attach(38);        // optional
 
     // electric pistons initialization
-    pinMode(MOWER_LEFT_PISTON_HIGH_PIN, OUTPUT);
-    pinMode(MOWER_RIGHT_PISTON_HIGH_PIN, OUTPUT);
+    pinMode(MOWER_LEFT_PISTON_HEIGH_PIN, OUTPUT);
+    pinMode(MOWER_RIGHT_PISTON_HEIGH_PIN, OUTPUT);
     pinMode(TRACK_LEFT_UNLOCK_PIN, OUTPUT);
     pinMode(TRACK_RIGHT_UNLOCK_PIN, OUTPUT);
     pinMode(SAFETY_STOP_PIN, OUTPUT);
