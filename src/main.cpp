@@ -3,13 +3,13 @@
 #include <RF24.h>
 #include <Arduino_FreeRTOS.h>
 
-#define p_mower_high_left 40    //piston height cut
-#define p_mower_high_right 41   //piston height cut
-#define p_unlock_left 42        //piston lock
-#define p_unlock_right 43       //piston lock
-#define safety_stop 43          //safety stop
+#define p_mower_high_left 40    // piston height cut
+#define p_mower_high_right 41   // piston height cut
+#define p_unlock_left 42        // piston lock
+#define p_unlock_right 43       // piston lock
+#define safety_stop 43          // safety stop
 
-//servos
+// servos
 Servo throttle;
 Servo brakes;
 Servo shifter_sel;
