@@ -21,9 +21,24 @@ Servo track_unlock_left;
 Servo mower_eng;
 Servo mower_brakes;
 
+//rf24
+RF24 radio(7, 8); // CE, CSN
+
+const byte address[6] = "00001";
+
+//struct for data reciver
+struct Data_Pack {
+int throttle_value;
+int shift_speed;
+bool shift_eng;
+int track_right;
+int track_left;
+bool mover_state;
+};
 
 
 void setup() {
+    Serial.begin(9600);
 
     // servo initialization
     throttle.attach(22);            // var 0 180                   potentiometer
@@ -41,13 +56,24 @@ void setup() {
     pinMode(TRACK_LEFT_UNLOCK_PIN, OUTPUT);
     pinMode(TRACK_RIGHT_UNLOCK_PIN, OUTPUT);
     pinMode(SAFETY_STOP_PIN, OUTPUT);
-
+    //rf 24
+    radio.begin();
+    radio.openReadingPipe(0, address);
+    radio.setPALevel(RF24_PA_MIN);
+    radio.startListening();
+    //struct inizialize
+    struct Data_Pack start{50,0,LOW,3,3,LOW};// pls remember to Franz to insert correct value for servo control
+// send data pack value for debug
+    Serial.println(start.throttle_value);
+    Serial.println(start.shift_speed);
+    Serial.println(start.shift_eng);
+    Serial.println(start.track_right);
+    Serial.println(start.track_left);
+    Serial.println(start.mover_state);
 }
 
-// the loop function runs over and over again forever
+
 void loop() {
-    digitalWrite(LED_BUILTIN, HIGH);    // turn the LED on (HIGH is the voltage level)
-    delay(1000);                            // wait for a second
-    digitalWrite(LED_BUILTIN, LOW);     // turn the LED off by making the voltage LOW
-    delay(1000);                            // wait for a second
+
+
 }
