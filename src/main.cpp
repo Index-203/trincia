@@ -15,7 +15,7 @@
 Servo throttle;
 Servo brakes;
 Servo shifter_selector;
-Servo shifter_engage;
+Servo shifter_clutch;
 Servo track_right_mode;
 Servo track_left_mode;
 Servo mower_engage;
@@ -28,13 +28,11 @@ const byte address[6] = "00001";
 //struct for data receiver
 struct Data_Pack {
 int throttle;
-bool brakes;
 int shifter_gear;
-bool shifter_engage;
+bool shifter_clutch;
 int track_right_mode;
 int track_left_mode;
 bool mower_engage;
-bool mower_brakes;
 };
 
 
@@ -42,13 +40,13 @@ void setup() {
 
     //servo initialization
     throttle.attach(22);            //var 0 180                   potentiometer
-    brakes.attach(24);              //0 180                       by software
+    brakes.attach(24);              //0 180                       by software -> on when shifter on 0 otherwise off
     shifter_selector.attach(28);    //var 0 180  r 0 1 2 3        receive r 0 1 2 3
-    shifter_engage.attach(30);      //0 180                       by software & receive
+    shifter_clutch.attach(30);      //0 180                       by software & receive
     track_right_mode.attach(32);    //var 0 180 3 pos             receive 3 values pos 1 pos 2 pos 3
     track_left_mode.attach(34);     //var 0 180  3 pos            receive 3 values pos 1 pos 2 pos 3
     mower_engage.attach(36);        //0 180                       receive a boolean valor 0 = disengage 1 = engage
-    mower_brakes.attach(38);        //optional
+    mower_brakes.attach(38);        //optional                    by software -> on when mower_engage on 0 otherwise off
 
     //electric pistons initialization
     pinMode(MOWER_LEFT_PISTON_HEIGHT_PIN, OUTPUT);
@@ -65,18 +63,16 @@ void setup() {
     radio.startListening();
 
     //struct initialize
-    struct Data_Pack initial_values{50, LOW, 0, LOW, 3, 3, LOW, LOW}; //pls remember Franz to insert correct value for servo control
+    struct Data_Pack initial_values{50, 0, LOW, 3, 3, LOW}; //pls remember Franz to insert correct value for servo control
 
     //send data pack value for debug
     Serial.begin(9600);
     Serial.println(initial_values.throttle);
-    Serial.println(initial_values.brakes);
     Serial.println(initial_values.shifter_gear);
-    Serial.println(initial_values.shifter_engage);
+    Serial.println(initial_values.shifter_clutch);
     Serial.println(initial_values.track_right_mode);
     Serial.println(initial_values.track_left_mode);
     Serial.println(initial_values.mower_engage);
-    Serial.println(initial_values.mower_brakes);
     Serial.end();
 }
 
