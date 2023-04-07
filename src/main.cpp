@@ -5,12 +5,12 @@
 #include <RF24.h>
 #include <Arduino_FreeRTOS.h>
 
-#define MOWER_LEFT_PISTON_HEIGHT_PIN 40     //piston height cut
-#define MOWER_RIGHT_PISTON_HEIGHT_PIN 41    //piston height cut
-#define TRACK_LEFT_UNLOCK_PIN 42            //piston lock
-#define TRACK_RIGHT_UNLOCK_PIN 43           //piston lock
+#define MOWER_PISTON_HEIGHT_PIN_1 40     //piston height cut
+#define MOWER_PISTON_HEIGHT_PIN_2 41    //piston height cut
+#define TRACK_UNLOCK_PIN_1 42            //piston lock
+#define TRACK_UNLOCK_PIN_2 43           //piston lock
 #define SAFETY_STOP_PIN 44                  //safety stop
-
+//alessia line
 //servos
 Servo throttle;
 Servo brakes;
@@ -27,12 +27,12 @@ const byte address[6] = "00001";
 
 //struct for data receiver
 struct Data_Pack {
-int throttle;
-int shifter_gear;
-bool shifter_clutch;
-int track_right_mode;
-int track_left_mode;
-bool mower_engage;
+int throttle_value;
+int shifter_gear_value;
+bool shifter_clutch_value;
+int track_right_mode_value;
+int track_left_mode_value;
+bool mower_engage_value;
 };
 
 
@@ -49,17 +49,17 @@ void setup() {
     mower_brakes.attach(38);        //optional                    by software -> on when mower_engage on 0 otherwise off
 
     //electric pistons initialization
-    pinMode(MOWER_LEFT_PISTON_HEIGHT_PIN, OUTPUT);
-    pinMode(MOWER_RIGHT_PISTON_HEIGHT_PIN, OUTPUT);
-    pinMode(TRACK_LEFT_UNLOCK_PIN, OUTPUT);
-    pinMode(TRACK_RIGHT_UNLOCK_PIN, OUTPUT);
+    pinMode(MOWER_PISTON_HEIGHT_PIN_1, OUTPUT);
+    pinMode(MOWER_PISTON_HEIGHT_PIN_2, OUTPUT);
+    pinMode(TRACK_UNLOCK_PIN_1, OUTPUT);
+    pinMode(TRACK_UNLOCK_PIN_2, OUTPUT);
     pinMode(SAFETY_STOP_PIN, OUTPUT);
 
     //rf24 connection initialization
     radio.begin();
     radio.setChannel(125);
     radio.openReadingPipe(0, address);
-    radio.setPALevel(RF24_PA_MIN);
+    radio.setPALevel(RF24_PA_MAX);
     radio.startListening();
 
     //struct initialize
@@ -67,12 +67,12 @@ void setup() {
 
     //send data pack value for debug
     Serial.begin(9600);
-    Serial.println(initial_values.throttle);
-    Serial.println(initial_values.shifter_gear);
-    Serial.println(initial_values.shifter_clutch);
-    Serial.println(initial_values.track_right_mode);
-    Serial.println(initial_values.track_left_mode);
-    Serial.println(initial_values.mower_engage);
+    Serial.println(initial_values.throttle_value);
+    Serial.println(initial_values.shifter_gear_value);
+    Serial.println(initial_values.shifter_clutch_value);
+    Serial.println(initial_values.track_right_mode_value);
+    Serial.println(initial_values.track_left_mode_value);
+    Serial.println(initial_values.mower_engage_value);
     Serial.end();
 }
 
