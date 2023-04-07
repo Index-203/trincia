@@ -14,11 +14,11 @@
 //servos
 Servo throttle;
 Servo brakes;
-Servo shifter_sel;
-Servo shifter_eng;
-Servo track_unlock_right;
-Servo track_unlock_left;
-Servo mower_eng;
+Servo shifter_selector;
+Servo shifter_engage;
+Servo track_right_mode;
+Servo track_left_mode;
+Servo mower_engage;
 Servo mower_brakes;
 
 //rf24
@@ -27,12 +27,14 @@ const byte address[6] = "00001";
 
 //struct for data receiver
 struct Data_Pack {
-int throttle_value;
-int shift_speed;
-bool shift_eng;
-int track_right;
-int track_left;
-bool mover_state;
+int throttle;
+bool brakes;
+int shifter_gear;
+bool shifter_engage;
+int track_right_mode;
+int track_left_mode;
+bool mower_engage;
+bool mower_brakes;
 };
 
 
@@ -41,11 +43,11 @@ void setup() {
     //servo initialization
     throttle.attach(22);            //var 0 180                   potentiometer
     brakes.attach(24);              //0 180                       by software
-    shifter_sel.attach(28);         //var 0 180  r 0 1 2 3        receive r 0 1 2 3
-    shifter_eng.attach(30);         //0 180                       by software & receive
-    track_unlock_right.attach(32);  //var 0 180 3 pos             receive 3 valor pos 1 pos 2 pos 3
-    track_unlock_left.attach(34);   //var 0 180  3 pos            receive 3 valor pos 1 pos 2 pos 3
-    mower_eng.attach(36);           //0 180                       receive a boolean valor 0 = disengage 1 = engage
+    shifter_selector.attach(28);    //var 0 180  r 0 1 2 3        receive r 0 1 2 3
+    shifter_engage.attach(30);      //0 180                       by software & receive
+    track_right_mode.attach(32);    //var 0 180 3 pos             receive 3 values pos 1 pos 2 pos 3
+    track_left_mode.attach(34);     //var 0 180  3 pos            receive 3 values pos 1 pos 2 pos 3
+    mower_engage.attach(36);        //0 180                       receive a boolean valor 0 = disengage 1 = engage
     mower_brakes.attach(38);        //optional
 
     //electric pistons initialization
@@ -63,16 +65,19 @@ void setup() {
     radio.startListening();
 
     //struct initialize
-    struct Data_Pack initial_values{50, 0, LOW, 3, 3, LOW}; //pls remember Franz to insert correct value for servo control
+    struct Data_Pack initial_values{50, LOW, 0, LOW, 3, 3, LOW, LOW}; //pls remember Franz to insert correct value for servo control
 
     //send data pack value for debug
     Serial.begin(9600);
-    Serial.println(initial_values.throttle_value);
-    Serial.println(initial_values.shift_speed);
-    Serial.println(initial_values.shift_eng);
-    Serial.println(initial_values.track_right);
-    Serial.println(initial_values.track_left);
-    Serial.println(initial_values.mover_state);
+    Serial.println(initial_values.throttle);
+    Serial.println(initial_values.brakes);
+    Serial.println(initial_values.shifter_gear);
+    Serial.println(initial_values.shifter_engage);
+    Serial.println(initial_values.track_right_mode);
+    Serial.println(initial_values.track_left_mode);
+    Serial.println(initial_values.mower_engage);
+    Serial.println(initial_values.mower_brakes);
+    Serial.end();
 }
 
 
