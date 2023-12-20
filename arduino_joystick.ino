@@ -4,7 +4,10 @@ Servo mioServo;  // Crea l'oggetto servo
 
 int pinJoystickX = A0;  // Pin analogico per l'asse Y del joystick
 int valJoystick;  // Valore letto dal joystick
-int posizioneCorrente = 90;  // Posizione corrente del servo
+int posizioneCorrente = 0;  // Posizione corrente del servo
+int gradi_start = 0;
+int gradi_end = 180;
+int gradi_mid_start, gradi_mid_end;
 
 void setup() {
   mioServo.attach(9);  // Collega il servo al pin 9
@@ -13,10 +16,12 @@ void setup() {
 }
 
 void loop() {
+  gradi_mid_start = gradi_end/2 - 5;
+  gradi_mid_end = gradi_end/2 + 5;
   valJoystick = analogRead(pinJoystickX);  // Legge la posizione dell'asse Y del joystick
-  valJoystick = map(valJoystick, 0, 1023, 0, 180);  // Scala il valore per il servo
+  valJoystick = map(valJoystick, 0, 1023, gradi_end, gradi_start);  // Scala il valore per il servo
 
-  if (valJoystick >= 85 && valJoystick <= 95) // basta anche solo valJoystick==90 il mio servo non ce la faceva  -- fa stare fermo il servo (circa)
+  if (valJoystick >= gradi_mid_start && valJoystick <= gradi_mid_end) // basta anche solo valJoystick==90 il mio servo non ce la faceva  -- fa stare fermo il servo (circa)
   {
     mioServo.write(0);
   }
@@ -31,7 +36,8 @@ void loop() {
   
   
   mioServo.write(posizioneCorrente); // Muove il servo alla posizione richiesta
-  Serial.print("Valore del joystick: ");
+  Serial.print("Valore del joystick - pos corrente: ");
   Serial.println(posizioneCorrente);
-  delay(15);  // Aggiunge un ritardo per rallentare il movimento del servo
+  delay(100);  // Aggiunge un ritardo per rallentare il movimento del servo
+
 }
